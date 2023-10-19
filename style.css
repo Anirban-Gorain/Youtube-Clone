@@ -1,0 +1,49 @@
+*
+{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body
+{
+    font-family: 'Roboto';
+    background-color: var(--bg-clr);
+}
+
+.flexbox
+{
+    display: flex;
+    align-items: center;
+}
+
+.block
+{
+    display: block;
+}
+
+a, a:hover, a:visited
+{
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+/* :root
+{
+    --icon-color: rgb(255, 255, 255);
+    --border-color: #212121;
+    --text-color: rgb(255, 255, 255);
+    --hover-bgc: rgb(46, 44, 44);
+    --icon-fnt-size: 20px;
+    --bg-clr: #212121;
+} */
+
+:root{
+    --icon-color: #000000;
+    --border-color: #ffffff;
+    --text-color: #000000;
+    --hover-bgc: #e4e5f1;
+    --icon-fnt-size: 20px;
+    --bg-clr: #fafafa;
+}
+
