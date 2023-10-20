@@ -3,6 +3,37 @@
 
 @media only screen and (max-width: 600px)
 {
+    /* Navigation */
+
+    :root
+    {
+        --icon-fnt-size: 16px;
+    }
+
+    .icon
+    {
+        width: 25px;
+        height: 25px;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+    .youtube-logo
+    {
+        font-size: 25px;
+    }
+
+    .logo
+    {
+        margin: 0px 2px;
+    }
+
+    .middle .search-box
+    {
+        height: 25px;
+        border-radius: 25px;
+    }
+
     
 }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en">    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,10 +16,54 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800;900;1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800;900;1000&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    
+
+    <!-- Unavailable features error -->
+
+    <div class="error-container">
+        <h1>Sorry for inconvenience, this feature is not available for of now.</h1>
+        <div class="break"></div>
+        <h3>Developers are working on this.</h3>
+    </div>
+
+    <!-- Navigation -->
+
+    <nav class="navigation flexbox">
+        <div class="left flexbox">
+            <div class="menu icon" id="menu-button">
+                <i class="fa-solid fa-bars icon-fnt"></i>
+            </div>
+            <a class="logo flexbox" href="index.html">
+                <i class="fa-brands fa-youtube youtube-logo icon-fnt"></i>
+                <span class="youtube-text icon-fnt">YouTube</span>
+            </a>
+        </div>
+        <div class="middle flexbox">
+            <div class="search-box flexbox">
+                <input type="text" id="search-bar" class="icon-fnt" placeholder="Search...">
+                <button id="search-btn">
+                    <i class="fa-solid fa-magnifying-glass icon-fnt"></i>
+                </button>
+            </div>
+            <div class="voice-search icon">
+                <i class="fa-solid fa-microphone icon-fnt"></i>
+            </div>
+        </div>
+        <div class="right flexbox">
+            <div class="live icon">
+                <i class="fa-solid fa-video icon-fnt"></i>
+            </div>
+            <div class="notification icon">
+                <i class="fa-solid fa-bell icon-fnt"></i>
+            </div>
+            <div class="icon" id="avatar">
+                <img src="assets/images/Jack.png">
+            </div>
+        </div>
+    </nav>
+
 </body>
 
 <!-- JS files -->
