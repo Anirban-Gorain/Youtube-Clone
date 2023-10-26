@@ -3,6 +3,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-size: var(--text-fnt-size);
 }
 
 body
@@ -184,6 +185,7 @@ a, a:hover, a:visited
     border-top-right-radius: 25px;
     border-left: 1px solid var(--text-color);
     cursor: pointer;
+    font-size: var(--text-fnt-size);
 }
 
 .voice-search
@@ -324,4 +326,27 @@ a, a:hover, a:visited
 .active-link
 {
     background-color: var(--hover-bgc);
+}
+
+/* Suggestion section */
+
+.suggestion-container
+{
+    position: fixed;
+    z-index: 2;
+    height: auto;
+    width: 200px;
+    border-radius: 5px;
+    background-color: var(--bg-clr);
+}
+
+.suggestion-items
+{
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    padding: 2px 5px;
+    background-color: transparent;
+    color: var(--text-color);
+    cursor: pointer;
 }

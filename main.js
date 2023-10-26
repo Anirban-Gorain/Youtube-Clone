@@ -188,9 +188,6 @@ function showLessYTSBChannel()
     });
 }
 
-
-console.log(showMoreYTSBChannelBTN, showLessYTSBChannelBTN);
-
 // Unavailable YT-functionalities error handling
 
 const contents=document.querySelectorAll(".unavailable");
@@ -216,3 +213,116 @@ function showNotAvailable()
 document.querySelector("#avatar").addEventListener("click", showNotAvailable);
 document.querySelector(".notification").addEventListener("click", showNotAvailable);
 document.querySelector(".live").addEventListener("click", showNotAvailable);
+
+// Search feature
+
+const searchBar=document.querySelector("#search-bar");
+const searchBtn=document.querySelector("#search-btn");
+
+searchBar.addEventListener("keydown", (event) => 
+{
+    if(event.key==="Enter")
+    {
+        // Search result
+
+        console.log("Search result");
+        let suggestionContainer=document.querySelector(".suggestion-container");
+        suggestionContainer.remove();
+        
+
+        return;
+    }
+
+    // We have add a few ms of delay because of we are not getting correctly the value of SearchBar.
+    
+    setTimeout(()=>
+    {
+        const valueOfSearchBar=searchBar.value;
+
+        fetch(`http://suggestqueries.google.com/complete/search?client=firefox&q=${valueOfSearchBar}`)
+        .then((response)=>
+        {
+            response.json().then((response)=>
+            {
+                showSearchSuggestions(response[1]);
+            });
+        })
+        .catch((error)=>
+        {
+            console.log(error);
+        });
+    }, 2);
+});
+
+function showSearchSuggestions(response)
+{
+    let suggestionContainer=document.querySelector(".suggestion-container");
+
+    if(suggestionContainer===null)
+    {
+        // Creating the box
+
+        suggestionContainer=document.createElement("div");
+        suggestionContainer.classList.add("suggestion-container");
+        document.querySelector("body").prepend(suggestionContainer);
+
+        // Setting the dimensions (width, height, top, left)
+
+        const dimensionsOfSearchBar=searchBar.getBoundingClientRect();
+        const dimensionsOfSearchBtn=searchBtn.getBoundingClientRect();
+        
+        suggestionContainer.style.width=`${dimensionsOfSearchBar.width+dimensionsOfSearchBtn.width}px`;
+        suggestionContainer.style.left=`${dimensionsOfSearchBar.x}px`;
+        suggestionContainer.style.top=`${dimensionsOfSearchBar.bottom+5}px`;
+    }
+
+    suggestionContainer.innerHTML="";
+
+    response.forEach((element)=>
+    {
+        const suggestion=`<div class="suggestion-items" onclick="fillSearchBar()">${element}</div>`;
+        suggestionContainer.insertAdjacentHTML("beforeend", suggestion);
+    });
+}
+
+document.addEventListener("click", (event)=>
+{
+    const clickedElement=event.target;
+
+    // When we are clicking outside of the suggestion container and if suggestion container is present remove that.
+    
+    const suggestionContainer=document.querySelector(".suggestion-container");
+
+    /*
+        is 'clickedElement' has a class
+        
+        Yes :  Suggestion-container must be present and that should't be search-bar and suggested-items.
+
+        No : Remove the suggestion container, because that is neither Search-bar nor Suggested-items.
+
+    */
+
+    if(clickedElement.classList.length!=0)
+    {
+        if((suggestionContainer!==null) && (clickedElement.classList.contains("search-bar")==false && clickedElement.classList.contains("suggestion-items")==false))
+            suggestionContainer.remove();
+    }
+    else
+    {
+        if(suggestionContainer!==null)
+            suggestionContainer.remove();
+    }
+});
+
+function fillSearchBar()
+{
+    const event=window.event;
+    const clickedElement=event.target;
+    searchBar.value=clickedElement.innerText;
+
+    // Search result
+
+    console.log("Search result");
+    let suggestionContainer=document.querySelector(".suggestion-container");
+    suggestionContainer.remove();
+}
