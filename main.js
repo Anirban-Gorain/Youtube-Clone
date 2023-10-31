@@ -221,15 +221,18 @@ const searchBtn=document.querySelector("#search-btn");
 
 searchBar.addEventListener("keydown", (event) => 
 {
-    if(event.key==="Enter")
+    if(event.key==="Enter" && (searchBar.value.length)>0)
     {
         // Search result
 
-        console.log("Search result");
-        let suggestionContainer=document.querySelector(".suggestion-container");
-        suggestionContainer.remove();
-        
+        const searchQuery=searchBar.value;
+        const response=loadData(searchQuery);
 
+        let suggestionContainer=document.querySelector(".suggestion-container");
+
+        if(suggestionContainer!=null)
+            suggestionContainer.remove();
+        
         return;
     }
 
@@ -252,6 +255,23 @@ searchBar.addEventListener("keydown", (event) =>
             console.log(error);
         });
     }, 2);
+});
+
+searchBtn.addEventListener("click", ()=>
+{
+    if((searchBar.value.length)>0)
+    {
+        // Search result
+        const searchQuery=searchBar.value;
+        loadData(searchQuery);
+
+        let suggestionContainer=document.querySelector(".suggestion-container");
+
+        if(suggestionContainer!=null)
+            suggestionContainer.remove();
+        
+        return;
+    }
 });
 
 function showSearchSuggestions(response)
@@ -325,4 +345,142 @@ function fillSearchBar()
     console.log("Search result");
     let suggestionContainer=document.querySelector(".suggestion-container");
     suggestionContainer.remove();
+}
+
+// Loading video data and showing that
+
+const LoadingTimeKeywords=["New videos", "Trending", "New uploads", "Recent videos"];
+
+document.onload = loadData(getRandomInt(0, LoadingTimeKeywords.length-1));
+
+function getRandomInt(min, max)
+{
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function loadData(searchQuery)
+{
+    const apiKey="AIzaSyAgfB0noF6UPgBcMULr8b9IDECWkXqGadQ";
+    const url=`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q="${searchQuery}"&part=snippet&maxResults=50&type=video`;
+    const responsePromise=fetch(url);
+    let channelIds="";
+
+    responsePromise.then((rawResponse) =>
+    {
+        rawResponse.json().then((response)=>
+        {
+            let requiredResponse=[];
+            
+            for(let i=0; i<50; i++)
+            {
+                let videoId=response["items"][i]["id"]["videoId"], videoTitle=response["items"][i]["snippet"]["title"], channelId=response["items"][i]["snippet"]["channelId"], thimbleLink=response["items"][i]["snippet"]["thumbnails"]["high"]["url"];
+                channelIds=channelId+","+channelIds;
+                let temp=[];
+                temp.push(videoId, videoTitle, thimbleLink, channelId);
+                requiredResponse.push(temp);
+            }
+
+            channelIds=channelIds.slice(0, channelIds.length-1)
+
+            const thumbnailResponse=fetch(`https://www.googleapis.com/youtube/v3/channels?key=${apiKey}&part=snippet&id=${channelIds}&maxResults=50`);
+            let channelIdAndLink=new Map();
+
+            thumbnailResponse.then((rawResponse)=>
+            {
+                rawResponse.json().then((response)=>
+                {
+                    response["items"].forEach((elem)=>
+                    {
+                        const channelId=elem["id"];
+                        const thumbnailLink=elem["snippet"]["thumbnails"]["default"]["url"];
+
+                        channelIdAndLink.set(channelId, thumbnailLink);
+                    });
+
+                    requiredResponse.forEach((elem) =>
+                    {
+                        elem.push(channelIdAndLink.get(elem[3]));
+                    });
+
+                    showData(requiredResponse);
+                });
+            })
+            .catch((error)=>
+            {
+                console.log(error);
+            });
+        });
+    })
+    .catch((error)=>
+    {
+        console.log(error);
+    });
+}
+
+function showData(response)
+{
+    const videoContainer=document.querySelector(".video-thumbnail-container");
+
+    videoContainer.innerHTML="";
+
+    response.forEach((elem)=>
+    {
+        const videoThumbnail=
+        `
+            <div class="thumbnail-box ${elem[0]}" onclick="playVideo()">
+                <div class="thumbnail" style="background-image: url(${elem[2]});}"></div>
+                <div class="video-metadata">
+                    <div class="channel">
+                        <div class="channel-logo" style="background-image: url(${elem[4]});}"></div>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-title">${elem[1]}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        videoContainer.insertAdjacentHTML("beforeend", videoThumbnail);
+        });
+
+        fixThumbnailBoxSize();
+}
+
+/* 
+
+    This following function will find the width of the first thumbnailBox then it will take the thumbnailBoxes from the last if width is grater than the first thumbnailBox it will set the width to first thumbnailBox.
+
+*/
+
+function fixThumbnailBoxSize()
+{
+    const thumbnailBoxes=document.querySelectorAll(".thumbnail-box");
+
+    if(thumbnailBoxes==0 || thumbnailBoxes==null)
+        return;
+
+    // If number of thumbnail boxes are lesser than the number of thumbnail boxes can be accommodated in a row.
+
+    // Bug to be fixed.
+
+    
+    // If number of thumbnail boxes are grater than the number of thumbnail boxes can be accommodated in a row.
+    
+    const firstThumbnailBoxWidth=Number(thumbnailBoxes[0].getBoundingClientRect().width);
+    const len=thumbnailBoxes.length;
+    
+    for(let i=len-1; i>=0; i--)
+    {
+        const width=Number(thumbnailBoxes[i].getBoundingClientRect().width);
+        
+        if(width>firstThumbnailBoxWidth)
+        {
+                thumbnailBoxes[i].style.maxWidth=firstThumbnailBoxWidth+"px";
+        }
+        else
+        {
+            break;
+        }
+    }
 }

@@ -60,15 +60,15 @@ a, a:hover, a:visited
 
 .error-container
 {
-    position: absolute;
-    width: 100vw;
+    position: fixed;
+    width: 100%;
     height: 100vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-content: center;
     background-color: var(--bg-clr);
-    z-index: 2;
+    z-index: 6;
     margin-top: -100vh;
     text-align: center;
     padding: 50px;
@@ -100,7 +100,7 @@ a, a:hover, a:visited
     top: 0px;
     left: 0;
     width: 100%;
-    z-index: 1; /* Dependent of side menu */ 
+    z-index: 4; /* Dependent on Navigation, SideBar, Overlay, VideoThumbnailBox */ 
 }
 
 .icon
@@ -215,7 +215,7 @@ a, a:hover, a:visited
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 0; /* Dependent of navigation */
+    z-index: 3; /* Dependent on Navigation, SideBar, Overlay, VideoThumbnailBox */
     margin-left: -208px;
     transition: 0.2s ease-in-out;
     /* border-right: 1px solid black; */
@@ -318,6 +318,10 @@ a, a:hover, a:visited
 
 #overlay
 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2; /* Dependent on Navigation, SideBar, Overlay, VideoThumbnailBox */
     width: 0%;
     height: 0vh;
     background-color: transparent;
@@ -333,7 +337,7 @@ a, a:hover, a:visited
 .suggestion-container
 {
     position: fixed;
-    z-index: 2;
+    z-index: 5;
     height: auto;
     width: 200px;
     border-radius: 5px;
@@ -349,4 +353,124 @@ a, a:hover, a:visited
     background-color: transparent;
     color: var(--text-color);
     cursor: pointer;
+}
+
+/* Video thumbnails */
+
+.video-thumbnail-container
+{
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 15px;
+    top: 0;
+    left: 0;
+    padding : 15px;
+    padding-top: calc(40px + 10px + 10px + 10px) /* IconHeight + NavPaddingTop + NavPaddingBottom + Extra */;
+    height: auto;
+    width: 100%; /*Don't use 100vw that will give horizontal scroll bar, because in 100vw if vertical scroll bar get added then a horizontal scrollbar will also be added automatically*/
+    background-color: transparent;
+    color: var(--text-color);
+    z-index: 1;
+}
+
+.thumbnail-box
+{
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 280px;
+    height: 230px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    /* background-color: thistle; */
+}
+
+.thumbnail
+{
+    width: 100%;
+    cursor: pointer;
+    flex-basis: calc(100% - 45px) /* Entire - height of channel logo */;
+    border-radius: 10px;
+    background-position: 0% 51%;
+    background-size: 110% 135%;
+    background-repeat: no-repeat;
+}
+
+.video-metadata
+{
+    width: 100%;
+    height: 55px;
+    background-color: transparent;
+    display: flex;
+    padding-top: 10px;
+}
+
+.channel
+{
+    background-color: transparent;
+}
+
+.channel .channel-logo
+{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin: auto;
+    display: flex;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
+.video-info
+{
+    height: 45px;
+    background-color: transparent;
+    padding-left: 5px; 
+    width: calc(100% - 45px);
+}
+
+.video-info .video-title
+{
+    color: var(--text-color);
+    font-weight: 500;
+    display: block;
+    width: 100%;
+    background-color: transparent;
+    position: relative;
+    --line-height: 22.5px;
+    line-height: var(--line-height);
+    max-height: calc(var(--line-height) * 2);
+    overflow: hidden;
+}
+
+.video-info .video-title::before
+{
+    content: "...";
+    position: absolute;
+    width: 80px;
+    height: 21.5px;
+    line-height: 13px;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    background-color: var(--bg-clr);
+    background: linear-gradient(90deg, rgba(0,0,0,0) 0%, var(--bg-clr) 78%);
+    text-align: right;
+}
+
+.video-info .video-title::after
+{
+    content: "";
+    display: inline-block;
+    width: 30px;
+    height: 20px;
+    position: absolute;
+    right: 0;
+    z-index: 2;
+    background-color: var(--bg-clr);
 }
