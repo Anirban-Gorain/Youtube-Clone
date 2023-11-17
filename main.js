@@ -361,7 +361,7 @@ function getRandomInt(min, max)
 
 function loadData(searchQuery)
 {
-    const apiKey="AIzaSyAgfB0noF6UPgBcMULr8b9IDECWkXqGadQ";
+    const apiKey="AIzaSyA57JfEk328_tW75bwhjgj9kBXzyqzM1lE";
     const url=`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q="${searchQuery}"&part=snippet&maxResults=50&type=video`;
     const responsePromise=fetch(url);
     let channelIds="";
@@ -490,4 +490,105 @@ function playVideo()
 {
     let videoID=window.event.target.parentElement.classList[1];
     window.open(`https://www.youtube.com/watch?v=${videoID}`, "_blank");    
+}
+
+// Profile section pop-up, menu.
+
+const profilePopUpMenu=document.querySelector("#avatar");
+const profilePopUp=document.querySelector("#profile-pop-up");
+const navigation=document.querySelector(".navigation");
+let isVisibleProfilePopUp=false;
+let isProfileSectionPopUpPositionSettled=false;
+
+profilePopUpMenu.addEventListener("click", (event)=>
+{
+    if(!isVisibleProfilePopUp)
+        showPopUp("profile-pop-up");
+    else  
+        hidePopUp("profile-pop-up");
+
+    if(!isProfileSectionPopUpPositionSettled)
+    {
+        isProfileSectionPopUpPositionSettled=true;
+
+        profilePopUpWidth=profilePopUp.getBoundingClientRect().width;
+
+        profilePopUp.style.left=`${event.clientX-profilePopUpWidth}px`;
+        profilePopUp.style.top=`${Number(navigation.getBoundingClientRect().height)}px`;
+    }
+    
+    isVisibleProfilePopUp=!isVisibleProfilePopUp;
+});
+
+function showPopUp(id)
+{
+    const element=document.querySelector(`#${id}`);
+
+    if(element==null)
+        return;
+
+    element.style.display="block";
+}
+
+function hidePopUp(id)
+{
+    const element=document.querySelector(`#${id}`);
+
+    if(element==null)
+        return;
+
+    element.style.display="none";
+}
+
+// Dark and light theme
+
+const themeCheckBox=document.querySelector("#theme");
+const themeBoggleBtn=document.querySelector("#theme-toggle-btn");
+const colorVariables=document.querySelector(":root");
+const lightOrDark=window.matchMedia('(prefers-color-scheme: dark)');
+
+if(lightOrDark.matches==true)
+{
+    // Dark mode
+
+    setLightDark("dark");
+    themeCheckBox.checked=true;
+}
+else
+{
+    // Light mode
+
+    setLightDark("light");
+}
+
+themeBoggleBtn.addEventListener("click", ()=>
+{
+    if(!themeCheckBox.checked)
+    {
+        setLightDark("dark");
+    }
+    else
+    {
+        setLightDark("light");
+    }
+});
+
+function setLightDark(mode)
+{
+    if(mode=="dark")
+    {
+        colorVariables.style.setProperty("--icon-color", "rgb(255, 255, 255)");
+        colorVariables.style.setProperty("--border-color", "#212121");
+        colorVariables.style.setProperty("--text-color", "rgb(255, 255, 255)");
+        colorVariables.style.setProperty("--hover-bgc", "rgb(46, 44, 44)");
+        colorVariables.style.setProperty("--bg-clr", "#212121");
+    }
+    else
+    {
+        colorVariables.style.setProperty("--icon-color", "#000000");
+        colorVariables.style.setProperty("--border-color", "#ffffff");
+        colorVariables.style.setProperty("--text-color", "#000000");
+        colorVariables.style.setProperty("--hover-bgc", "#e4e5f1");
+        colorVariables.style.setProperty("--bg-clr", "#fafafa");
+    }
 }

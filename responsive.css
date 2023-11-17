@@ -40,7 +40,13 @@
         padding-top: calc(20px + 25px + 0px);
     }
 
-    
+    /* Profile pop-up */
+
+    .pop-up-heading, .pop-up-content
+    {
+        color: var(--text-color);
+        font-size: var(--icon-fnt-size);
+    }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
