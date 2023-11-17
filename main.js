@@ -210,7 +210,6 @@ function showNotAvailable()
     }, 1000*2);
 }
 
-document.querySelector("#avatar").addEventListener("click", showNotAvailable);
 document.querySelector(".notification").addEventListener("click", showNotAvailable);
 document.querySelector(".live").addEventListener("click", showNotAvailable);
 
@@ -483,4 +482,12 @@ function fixThumbnailBoxSize()
             break;
         }
     }
+}
+
+// Play video
+
+function playVideo()
+{
+    let videoID=window.event.target.parentElement.classList[1];
+    window.open(`https://www.youtube.com/watch?v=${videoID}`, "_blank");    
 }
