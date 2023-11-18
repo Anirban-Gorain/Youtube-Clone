@@ -594,3 +594,58 @@ a, a:hover, a:visited
     /* border: 1px solid var(--text-color); */
 
 }
+
+/* Voice search */
+
+.transcript-container
+{
+    position: absolute;
+    background-color: var(--bg-clr);
+    padding: 10px 2% 10px 2%;
+    height: 200px;
+    color: var(--text-color);
+    z-index: 5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.transcript-container i, .transcript-container span
+{
+    display: block;
+}
+
+.transcript-container i
+{
+    font-size: 20px;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    border: 2px solid red;
+    border-radius: 50%;
+    line-height: 60px;
+    flex-shrink: 0;
+    /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+    animation: micBorderAnimation .5s  infinite alternate forwards;
+}
+
+.transcript-container span
+{
+    width: calc(90% - 60px);
+    height: auto;
+    color: var(--text-color);
+    padding-left: 10px;
+
+}
+
+@keyframes micBorderAnimation
+{
+    0%
+    {
+        border-color: rgb(255, 0, 0);
+    }  
+    100%
+    {
+        border-color: rgba(255, 0, 0, 0);
+    } 
+}

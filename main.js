@@ -592,3 +592,99 @@ function setLightDark(mode)
         colorVariables.style.setProperty("--bg-clr", "#fafafa");
     }
 }
+
+// Voice search
+
+const voiceSearchBtn=document.querySelector("#voice-search");
+
+voiceSearchBtn.addEventListener("click", ()=>
+{
+    if ('webkitSpeechRecognition' in window)
+    {
+        startSpeechRecognition();
+    } 
+    else
+    {
+        // Web Speech API is not supported
+
+        console.log("Not present");
+    }
+});
+
+function startSpeechRecognition()
+{
+    showSpeech("Speak now ...");
+
+    const recognition = new webkitSpeechRecognition();
+    let transcript;
+
+    recognition.lang = 'en-US';
+    recognition.interimResults = true;
+
+
+    recognition.addEventListener('result', function(e)
+    {
+        // Get the transcript of the speech
+
+        transcript = e.results[0][0].transcript;
+
+        // Set the value of the text input field to the transcript
+        
+        showSpeech(transcript);
+    });
+    
+    recognition.addEventListener('end', ()=>
+    {
+
+        setTimeout(() =>
+        {
+            loadData(transcript);
+            removeSpeech();
+        }, 2*1000);
+    });
+
+    recognition.start();
+}
+
+function showSpeech(transcript)
+{
+    const transcriptContainer=document.querySelector(".transcript-container");
+
+    if(transcriptContainer===null)
+    {   
+        voiceSearchTranscript=document.createElement("div");
+        voiceSearchTranscript.classList.add("transcript-container");
+        document.querySelector("body").prepend(voiceSearchTranscript);
+
+        // Setting the dimensions (width, height, top, left)
+
+        const dimensionsOfSearchBar=searchBar.getBoundingClientRect();
+        const dimensionsOfSearchBtn=searchBtn.getBoundingClientRect();
+        
+        voiceSearchTranscript.style.width=`${dimensionsOfSearchBar.width+dimensionsOfSearchBtn.width}px`;
+        voiceSearchTranscript.style.left=`${dimensionsOfSearchBar.x}px`;
+        voiceSearchTranscript.style.top=`${dimensionsOfSearchBar.bottom+5}px`;
+
+        // Adding the voice icon 
+
+        const iconAndTranscript=
+        `
+            <i class="fa-solid fa-microphone"></i>
+            <span id="transcript">This is text</span>
+        `;
+
+        voiceSearchTranscript.insertAdjacentHTML("beforeend", iconAndTranscript);
+    }
+
+    document.querySelector("#transcript").innerText=transcript;
+}
+
+function removeSpeech()
+{
+    const transcriptContainer=document.querySelector(".transcript-container");
+
+    if(transcriptContainer==null)
+        return;
+
+    transcriptContainer.remove();
+}
