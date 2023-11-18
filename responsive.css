@@ -47,6 +47,34 @@
         color: var(--text-color);
         font-size: var(--icon-fnt-size);
     }
+
+    /* Transcript */
+
+    .transcript-container
+    {
+        padding: 15px 2px 15px 2px;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: flex-start;
+        height: auto;
+    }
+
+    .transcript-container i
+    {
+        font-size: 14px;
+        width: 30px;
+        height: 30px;
+        line-height: 25px;
+    }
+
+    .transcript-container span
+    {
+        width: 100%;
+        padding-left: 0px;
+        font-size: var(--icon-fnt-size);
+        text-align: center;
+        margin-top: 10px;
+    }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */

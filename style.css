@@ -599,7 +599,7 @@ a, a:hover, a:visited
 
 .transcript-container
 {
-    position: absolute;
+    position: fixed;
     background-color: var(--bg-clr);
     padding: 10px 2% 10px 2%;
     height: 200px;
@@ -608,6 +608,7 @@ a, a:hover, a:visited
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 10px;
 }
 
 .transcript-container i, .transcript-container span
