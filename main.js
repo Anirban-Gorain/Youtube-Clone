@@ -635,11 +635,11 @@ function startSpeechRecognition()
     
     recognition.addEventListener('end', ()=>
     {
-
+        
         setTimeout(() =>
         {
-            loadData(transcript);
             removeSpeech();
+            loadData(transcript);
         }, 2*1000);
     });
 
